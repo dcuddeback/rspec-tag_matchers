@@ -8,5 +8,11 @@ require 'rspec-tag_matchers'
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
 RSpec.configure do |config|
-  
+
+end
+
+RSpec::Matchers.define :match do |rendered|
+  match do |matcher|
+    matcher.matches?(rendered)
+  end
 end
