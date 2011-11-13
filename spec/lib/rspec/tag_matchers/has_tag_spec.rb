@@ -169,7 +169,7 @@ describe RSpec::TagMatchers::HasTag do
     context "matches multiple attributes" do
       context 'have_tag(:foo).with_attribute(:bar => true, :baz => true)' do
         subject { have_tag(:foo).with_attribute(:bar => true, :baz => true) }
-        it      { should     match("<foo bar='1' baz'2'></foo>") }
+        it      { should     match("<foo bar='1' baz='2'></foo>") }
         it      { should_not match("<foo bar='1'></foo>") }
         it      { should_not match("<foo baz='2'></foo>") }
         it      { should_not match("<foo></foo>") }
