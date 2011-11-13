@@ -7,7 +7,6 @@ group :development do
   gem "yard"
   gem "bundler"
   gem "jeweler"
-  gem "rcov"
   gem "guard"
   gem "guard-rspec"
   gem "guard-bundler"
