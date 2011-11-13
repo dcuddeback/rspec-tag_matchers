@@ -14,6 +14,10 @@ module RSpec::TagMatchers
       end
     end
 
+    def with_action(action)
+      with_attribute(:action => action)
+    end
+
     private
 
     def matches_verb?(element, verb)

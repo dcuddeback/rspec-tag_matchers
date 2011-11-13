@@ -43,4 +43,14 @@ describe RSpec::TagMatchers::HasForm do
       it      { should     match("<form method='post'><input type='hidden' name='_method' value='PUT' /></form>") }
     end
   end
+
+  describe "matching form actions" do
+    context "have_form.with_action('/foobar')" do
+      subject { have_form.with_action("/foobar") }
+      it      { should_not match("<form></form>") }
+      it      { should     match("<form action='/foobar'></form>") }
+      it      { should_not match("<form action='/foobarz'></form>") }
+      it      { should_not match("<form action='/baz'></form>") }
+    end
+  end
 end
