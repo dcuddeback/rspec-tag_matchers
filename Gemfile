@@ -11,7 +11,9 @@ group :development do
   gem "guard"
   gem "guard-rspec"
   gem "guard-bundler"
+end
 
+group :osx do
   # Needed for Guard to operate optimally on OSX
   gem 'rb-fsevent'
   gem 'growl_notify'
