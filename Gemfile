@@ -14,6 +14,8 @@ end
 
 group :osx do
   # Needed for Guard to operate optimally on OSX
-  gem 'rb-fsevent'
-  gem 'growl_notify'
+  platforms :mri do
+    gem 'rb-fsevent'
+    gem 'growl_notify'
+  end
 end
