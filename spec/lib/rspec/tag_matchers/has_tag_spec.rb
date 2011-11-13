@@ -183,18 +183,18 @@ describe RSpec::TagMatchers::HasTag do
         subject { have_tag(:foo).with_criteria(:custom_filter) }
 
         it "should call custom_filter with Nokogiri::XML::Element as argument" do
-          HasTag.any_instance.should_receive(:custom_filter).with(an_instance_of(Nokogiri::XML::Element))
+          RSpec::TagMatchers::HasTag.any_instance.should_receive(:custom_filter).with(an_instance_of(Nokogiri::XML::Element))
           subject.matches?("<foo></foo>")
         end
 
         context "when custom_filter returns true" do
-          before { HasTag.any_instance.stub(:custom_filter) { true } }
+          before { RSpec::TagMatchers::HasTag.any_instance.stub(:custom_filter) { true } }
           it     { should     match("<foo></foo>") }
           it     { should_not match("<bar></bar>") }
         end
 
         context "when custom_filter returns false" do
-          before { HasTag.any_instance.stub(:custom_filter) { false } }
+          before { RSpec::TagMatchers::HasTag.any_instance.stub(:custom_filter) { false } }
           it     { should_not match("<foo></foo>") }
           it     { should_not match("<bar></bar>") }
         end
@@ -203,8 +203,8 @@ describe RSpec::TagMatchers::HasTag do
 
     context "as block" do
       context "have_tag(:foo).with_criteria { |element| ... }" do
-        let(:block) { Proc.new { |element| true } }
-        subject     { have_tag(:foo).with_criteria(&block) }
+        let!(:block) { lambda { |element| true } }
+        subject      { have_tag(:foo).with_criteria { |element| block.call(element) } }
 
         it "should call the block with Nokogiri::XML::Element as argument" do
           block.should_receive(:call).with(an_instance_of(Nokogiri::XML::Element))
@@ -231,8 +231,8 @@ describe RSpec::TagMatchers::HasTag do
 
         context "both filters return true" do
           before do
-            HasTag.any_instance.stub(:filter_1) { true }
-            HasTag.any_instance.stub(:filter_2) { true }
+            RSpec::TagMatchers::HasTag.any_instance.stub(:filter_1) { true }
+            RSpec::TagMatchers::HasTag.any_instance.stub(:filter_2) { true }
           end
 
           it { should     match("<foo></foo>") }
@@ -241,8 +241,8 @@ describe RSpec::TagMatchers::HasTag do
 
         context "filter_1 returns false" do
           before do
-            HasTag.any_instance.stub(:filter_1) { false }
-            HasTag.any_instance.stub(:filter_2) { true }
+            RSpec::TagMatchers::HasTag.any_instance.stub(:filter_1) { false }
+            RSpec::TagMatchers::HasTag.any_instance.stub(:filter_2) { true }
           end
 
           it { should_not match("<foo></foo>") }
@@ -251,8 +251,8 @@ describe RSpec::TagMatchers::HasTag do
 
         context "filter_2 returns false" do
           before do
-            HasTag.any_instance.stub(:filter_1) { true }
-            HasTag.any_instance.stub(:filter_2) { false }
+            RSpec::TagMatchers::HasTag.any_instance.stub(:filter_1) { true }
+            RSpec::TagMatchers::HasTag.any_instance.stub(:filter_2) { false }
           end
 
           it { should_not match("<foo></foo>") }
@@ -261,8 +261,8 @@ describe RSpec::TagMatchers::HasTag do
 
         context "both filters return false" do
           before do
-            HasTag.any_instance.stub(:filter_1) { false }
-            HasTag.any_instance.stub(:filter_2) { false }
+            RSpec::TagMatchers::HasTag.any_instance.stub(:filter_1) { false }
+            RSpec::TagMatchers::HasTag.any_instance.stub(:filter_2) { false }
           end
 
           it { should_not match("<foo></foo>") }
