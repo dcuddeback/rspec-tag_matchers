@@ -30,22 +30,28 @@ module RSpec::TagMatchers
       self
     end
 
+    protected
+
+    def test_attribute(actual, expected)
+      case expected
+      when String
+        actual == expected
+      when Symbol
+        actual =~ /^#{expected}$/i
+      when Regexp
+        actual =~ expected
+      when true
+        !actual.nil?
+      when false
+        actual.nil?
+      end
+    end
+
     private
 
     def matches_attributes?(element)
       @attributes.all? do |key, value|
-        case value
-        when String
-          element[key] == value
-        when Symbol
-          element[key] =~ /^#{value}$/i
-        when Regexp
-          element[key] =~ value
-        when true
-          !element[key].nil?
-        when false
-          element[key].nil?
-        end
+        test_attribute(element[key], value)
       end
     end
 
