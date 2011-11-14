@@ -48,6 +48,7 @@ describe RSpec::TagMatchers::HasTag do
         it      { should_not match("<foo></foo>") }
         it      { should     match("<foo bar='baz'></foo>") }
         it      { should     match("<foo bar='qux'></foo>") }
+        it      { should     match("<foo bar></foo>") }
         it      { should_not match("<foo qux='baz'></foo>") }
         it      { should_not match("<foo>bar</foo>") }
         it      { should_not match("<foo></foo><qux bar='baz'></qux>") }
@@ -58,6 +59,7 @@ describe RSpec::TagMatchers::HasTag do
         it      { should_not match("<foo></foo>") }
         it      { should_not match("<foo bar='baz'></foo>") }
         it      { should     match("<foo qux='baz'></foo>") }
+        it      { should     match("<foo qux></foo>") }
         it      { should_not match("<foo></foo><qux bar='baz'></qux>") }
       end
     end
@@ -68,6 +70,7 @@ describe RSpec::TagMatchers::HasTag do
         it      { should     match("<foo></foo>") }
         it      { should_not match("<foo bar='baz'></foo>") }
         it      { should_not match("<foo bar='qux'></foo>") }
+        it      { should_not match("<foo bar></foo>") }
         it      { should     match("<foo qux='baz'></foo>") }
       end
 
@@ -76,6 +79,7 @@ describe RSpec::TagMatchers::HasTag do
         it      { should     match("<foo></foo>") }
         it      { should     match("<foo bar='baz'></foo>") }
         it      { should_not match("<foo qux='baz'></foo>") }
+        it      { should_not match("<foo qux></foo>") }
       end
     end
 

@@ -32,7 +32,9 @@ module RSpec::TagMatchers
 
     protected
 
-    def test_attribute(actual, expected)
+    def test_attribute(attribute, expected)
+      actual = attribute && attribute.value
+
       case expected
       when String
         actual == expected
@@ -41,9 +43,9 @@ module RSpec::TagMatchers
       when Regexp
         actual =~ expected
       when true
-        !actual.nil?
+        !attribute.nil?
       when false
-        actual.nil?
+        attribute.nil?
       end
     end
 
@@ -51,7 +53,7 @@ module RSpec::TagMatchers
 
     def matches_attributes?(element)
       @attributes.all? do |key, value|
-        test_attribute(element[key], value)
+        test_attribute(element.attribute(key.to_s), value)
       end
     end
 

@@ -25,12 +25,12 @@ module RSpec::TagMatchers
     end
 
     def form_method(element)
-      method_override(element) || element[:method]
+      method_override(element) || element.attribute("method")
     end
 
     def method_override(element)
       override = element.css("input[type=hidden][name=_method]")
-      override && override.first && override.first[:value]
+      override && override.first && override.attribute("value")
     end
   end
 end
