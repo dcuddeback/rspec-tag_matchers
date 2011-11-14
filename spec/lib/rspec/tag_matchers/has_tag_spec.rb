@@ -3,6 +3,22 @@ require 'spec_helper'
 describe RSpec::TagMatchers::HasTag do
   include RSpec::TagMatchers
 
+  describe "inputs" do
+    let(:string)   { "<foo></foo>" }
+    let(:document) { Nokogiri::HTML::Document.parse(string) }
+    let(:node_set) { document.css("foo") }
+
+    subject { have_tag(:foo) }
+
+    it "should match against String" do
+      subject.should match(string)
+    end
+
+    it "should match against Nokogiri::XML::NodeSet" do
+      subject.should match(node_set)
+    end
+  end
+
   describe "tag name matching" do
     context "matches with symbol" do
       context 'have_tag(:foo)' do

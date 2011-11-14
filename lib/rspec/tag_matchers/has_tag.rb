@@ -13,7 +13,7 @@ module RSpec::TagMatchers
     end
 
     def matches?(rendered)
-      Nokogiri::HTML::Document.parse(rendered).css(@name).select do |element|
+      Nokogiri::HTML::Document.parse(rendered.to_s).css(@name).select do |element|
         matches_attributes?(element) && matches_criteria?(element)
       end.length > 0
     end
