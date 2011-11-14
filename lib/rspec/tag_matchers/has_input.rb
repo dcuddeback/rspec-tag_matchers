@@ -6,8 +6,8 @@ module RSpec::TagMatchers
   end
 
   class HasInput < HasTag
-    def initialize
-      super(:input)
+    def initialize(name = :input)
+      super
     end
 
     def for(*args)
