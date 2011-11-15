@@ -1,9 +1,35 @@
 = rspec-tag_matchers
 
-Description goes here.
+<tt>rspec-tag_matchers</tt> is a collection of RSpec matchers for testing Rails views. The matchers
+can match against any string containing HTML or any object whose +to_s+ method returns a string
+containing HTML (this includes Nokogiri classes). They assume Rails conventions. For example, the
++has_form+ matcher looks for a hidden input named +_method+ when testing a form's method.
+
+== Example
+
+  describe "users/new.html.haml" do
+    before(:each) do
+      assign(:user, User.new)
+      render
+    end
+
+    it { should have_form.with_verb(:post).with_action(user_path) }
+    it { should have_checkbox.for(:user => :terms_of_service) }
+  end
+
+== Status
+
+<tt>rspec-tag_matchers</tt> is tested against Ruby 1.8.7, 1.9.2, 1.9.3, REE,
+Rubinius (1.8 mode) and JRuby.
+
+http://travis-ci.org/dcuddeback/rspec-tag_matchers.png
+
+The library is well tested, but the collection of matchers is incomplete. I'm adding more on an
+as-needed basis.  Please feel free to fork this repository to add your own then send me a pull
+request.
 
 == Contributing to rspec-tag_matchers
- 
+
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
 * Fork the project
