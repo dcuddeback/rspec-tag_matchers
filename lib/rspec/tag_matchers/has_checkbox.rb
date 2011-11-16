@@ -1,4 +1,22 @@
 module RSpec::TagMatchers
+  # Matches <tt><input type="checkbox"></tt> tags in HTML.
+  #
+  # @modifier checked
+  #   Specifies that the checkbox must be checked.
+  #
+  # @modifier not_checked
+  #   Specifies that the checkbox must *not* be checked.
+  #
+  # @example Matching a checked checkbox for +terms_of_service+
+  #   it { should have_checkbox.for(:terms_of_service).checked }
+  #
+  # @example Matching an unchecked checkbox for +terms_of_service+
+  #   it { should have_checkbox.for(:terms_of_service).not_checked }
+  #
+  # @return [HasCheckbox]
+  #
+  # @see HasCheckbox.checked
+  # @see HasCheckbox.not_checked
   def have_checkbox
     HasCheckbox.new
   end

@@ -1,6 +1,18 @@
 require 'deep_flattening'
 
 module RSpec::TagMatchers
+  # Matches +<input>+ tags in HTML.
+  #
+  # @modifier for
+  #   Adds a criteria that the input must be for the given attribute.
+  #
+  # @example Matching an input for the +name+ attribute on +user+
+  #   it { should have_input.for(:user => :name) }
+  #   it { should have_input.for(:user, :name) }
+  #
+  # @return [HasInput]
+  #
+  # @see HasInput#for
   def have_input
     HasInput.new
   end

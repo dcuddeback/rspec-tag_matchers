@@ -34,6 +34,4 @@ end
 task :default => :spec
 
 require 'yard'
-YARD::Rake::YardocTask.new do |t|
-  t.options = ['--protected']
-end
+YARD::Rake::YardocTask.new

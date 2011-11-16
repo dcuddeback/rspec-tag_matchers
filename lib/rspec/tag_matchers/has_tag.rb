@@ -1,6 +1,27 @@
 require 'nokogiri'
 
 module RSpec::TagMatchers
+  # Matches HTML tags by name.
+  #
+  # @modifier with_attribute
+  #   Adds a criteria that an element must match the given attributes.
+  #
+  # @modifier with_criteria
+  #   Adds an arbitrary criteria.
+  #
+  # @example Matching anchor tags
+  #   it { should have_tag(:a) }
+  #
+  # @example Matching anchor tags that link to "/"
+  #   it { should have_tag(:a).with_attribute(:href => "/") }
+  #
+  # @example Matching anchor tags with an even +id+ attribute
+  #   it { should have_tag(:a).with_criteria { |elem| elem[:id].to_i.even? } }
+  #
+  # @return [HasTag]
+  #
+  # @see HasTag#with_attribute
+  # @see HasTag#with_criteria
   def have_tag(name)
     HasTag.new(name)
   end
