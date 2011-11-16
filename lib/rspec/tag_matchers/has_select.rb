@@ -9,7 +9,10 @@ module RSpec::TagMatchers
     HasSelect.new
   end
 
+  # A matcher that matches +<select>+ tags.
   class HasSelect < HasInput
+
+    # Initializes a HasSelect matcher that matches +select+ elements.
     def initialize
       super(:select)
     end

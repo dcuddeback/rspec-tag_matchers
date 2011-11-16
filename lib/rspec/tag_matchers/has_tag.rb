@@ -156,6 +156,14 @@ module RSpec::TagMatchers
     # Tests with +attribute+ matches +expected+ according the the attribute matching rules described
     # in {#with_attribute}. This can be useful for testing attributes in subclasses.
     #
+    # @note
+    #   The reason this method receives a +Nokogiri::XML::Attr+ object instead of the attribute's
+    #   value is that some attributes have meaning merely by existing, even if they don't have a
+    #   value. For example, the +checked+ attribute of a checkbox or radio button does not need to
+    #   have a value. If it doesn't have a value, +element[:checked]+ will return +nil+ in the JRuby
+    #   implementation of Nokogiri, which would make <tt>with_attribute(:checked => true)</tt> fail
+    #   in JRuby.
+    #
     # @param [Nokogiri::XML::Attr]              attribute   The attribute to be tested.
     # @param [String, Symbol, Regexp, Boolean]  expected    The expected value of +attribute+.
     #
