@@ -22,7 +22,7 @@ containing HTML (this includes Nokogiri classes). They assume Rails conventions.
 <tt>rspec-tag_matchers</tt> is tested against Ruby 1.8.7, 1.9.2, 1.9.3, REE,
 Rubinius (1.8 mode) and JRuby.
 
-http://travis-ci.org/dcuddeback/rspec-tag_matchers.png?branch=master
+{<img src="http://travis-ci.org/dcuddeback/rspec-tag_matchers.png?branch=master" />}[http://travis-ci.org/dcuddeback/rspec-tag_matchers]
 
 The library is well tested, but the collection of matchers is incomplete. I'm adding more on an
 as-needed basis.  Please feel free to fork this repository to add your own then send me a pull
