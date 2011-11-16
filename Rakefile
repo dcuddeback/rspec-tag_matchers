@@ -14,13 +14,13 @@ require 'rake'
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = "rspec-tag_matchers"
-  gem.homepage = "http://github.com/dcuddeback/rspec-tag_matchers"
-  gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
-  gem.email = "david.cuddeback@gmail.com"
-  gem.authors = ["David Cuddeback"]
+  gem.name        = "rspec-tag_matchers"
+  gem.homepage    = "http://github.com/dcuddeback/rspec-tag_matchers"
+  gem.license     = "MIT"
+  gem.summary     = %Q{RSpec matchers for Rails views}
+  gem.description = %Q{A collection of RSpec matchers that understand Rails conventions, allowing for more concise specs.}
+  gem.email       = "david.cuddeback@gmail.com"
+  gem.authors     = ["David Cuddeback"]
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
