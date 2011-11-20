@@ -6,9 +6,9 @@ module RSpec::TagMatchers
   #
   # @example Building a date matcher
   #   matcher = MultipleInputMatcher.new(
-  #       1 => HasSelect.new,
-  #       2 => HasSelect.new,
-  #       3 => HasSelect.new
+  #       '1i' => HasSelect.new,
+  #       '2i' => HasSelect.new,
+  #       '3i' => HasSelect.new
   #     )
   #   matcher.for(:user => :birthday) # will match <select> tags with names
   #                                   # "user[birthday(1i)]", "user[birthday(2i)]", and
@@ -16,8 +16,8 @@ module RSpec::TagMatchers
   #
   # @example Building a time matcher
   #   MultipleInputMatcher.new(       # by default, will match <select> tags with names by regular
-  #       4 => HasSelect.new,         # expressions: /\(4i\)/ and /\(5i\)/
-  #       5 => HasSelect.new
+  #       '4i' => HasSelect.new,      # expressions: /\(4i\)/ and /\(5i\)/
+  #       '5i' => HasSelect.new
   #     )
   #
   #
@@ -25,12 +25,13 @@ module RSpec::TagMatchers
 
     # Initializes a matcher that matches multiple input elements.
     #
-    # @param [Hash] components  A hash of matchers. The keys serve as indices and the values are the
-    #                           matchers that must be satisfied.
+    # @param [Hash] components  A hash of matchers. The keys should be the keys used in Rails'
+    #                           multi-parameter assignment, e.g., <tt>"1i"</tt>, <tt>"2s"</tt>, etc,
+    #                           and the values are the matchers that must be satisfied.
     def initialize(components)
       @components = components
-      @components.each do |index, matcher|
-        matcher.with_attribute(:name => /\(#{index}i\)/)
+      @components.each do |key, matcher|
+        matcher.with_attribute(:name => /\(#{key}\)/)
       end
     end
 
@@ -50,14 +51,14 @@ module RSpec::TagMatchers
       @failures.empty?
     end
 
-    # Specifies the inputs names with more accuracy than the default regular expressions. It
-    # delegates to each matcher's +for+ method. But it first appends the matcher's index to the last
+    # Specifies the inputs' names with more accuracy than the default regular expressions. It
+    # delegates to each matcher's +for+ method. But it first appends the matcher's key to the last
     # component of the input's name.
     #
     # @example Input naming delegation
     #   hour_matcher   = HasSelect.new
     #   minute_matcher = HasSelect.new
-    #   time_matcher   = MultipleInputMatcher.new(4 => hour_matcher, 5 => minute_matcher)
+    #   time_matcher   = MultipleInputMatcher.new('4i' => hour_matcher, '5i' => minute_matcher)
     #
     #   time_matcher.for(:event => :start_time) # calls hour_matcher.for("event", "start_time(4i)")
     #                                           # and minute_matcher.for("event", "start_time(5i)")
@@ -95,19 +96,19 @@ module RSpec::TagMatchers
       @components.values
     end
 
-    # Set's +matcher+'s input name according to +args+ and +index+.
+    # Set's +matcher+'s input name according to +args+ and +key+.
     #
-    # @param [Integer]      index   The matcher's index.
+    # @param [String]       key     The matcher's key.
     # @param [HasInput]     matcher The matcher.
     # @param [Arrah, Hash]  args    A hierarchy of names that would normally be passed to
     #                               {HasInput#for}.
-    def delegated_for(index, matcher, args)
+    def delegated_for(key, matcher, args)
       args = args.dup
       args.extend(DeepFlattening)
       args = args.deep_flatten
 
       args[-1]  = args[-1].to_s
-      args[-1] += "(#{index}i)"
+      args[-1] += "(#{key})"
       matcher.for(*args)
     end
   end

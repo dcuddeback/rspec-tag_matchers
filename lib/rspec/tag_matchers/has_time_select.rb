@@ -16,7 +16,7 @@ module RSpec::TagMatchers
 
     # Initializes a HasTimeSelect matcher.
     def initialize
-      super(4 => HasSelect.new, 5 => HasSelect.new)
+      super('4i' => HasSelect.new, '5i' => HasSelect.new)
     end
   end
 end

@@ -6,7 +6,7 @@ describe RSpec::TagMatchers::MultipleInputMatcher do
   let(:html)        { "<input name='foo' /><input name='bar' />" }
 
   let(:multiple_matcher) do
-    RSpec::TagMatchers::MultipleInputMatcher.new(2 => foo_matcher, 3 => bar_matcher)
+    RSpec::TagMatchers::MultipleInputMatcher.new('2i' => foo_matcher, '3i' => bar_matcher)
   end
 
   before do
