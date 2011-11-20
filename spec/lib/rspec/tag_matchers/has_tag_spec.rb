@@ -291,4 +291,60 @@ describe RSpec::TagMatchers::HasTag do
       end
     end
   end
+
+  describe "#description" do
+    context "for simple matchers" do
+      context "have_tag(:foo)" do
+        subject { have_tag(:foo) }
+        its(:description) { should == 'have "foo" tag' }
+      end
+
+      context "have_tag(:bar)" do
+        subject { have_tag(:bar) }
+        its(:description) { should == 'have "bar" tag' }
+      end
+    end
+
+    context "for matchers with attribute criteria" do
+      context "have_tag(:foo).with_attribute(:bar => :baz)" do
+        subject { have_tag(:foo).with_attribute(:bar => :baz) }
+        its(:description) { should == 'have "foo" tag with attribute bar=:baz' }
+      end
+
+      context "have_tag(:foo).with_attribute(:bar => 'baz')" do
+        subject { have_tag(:foo).with_attribute(:bar => 'baz') }
+        its(:description) { should == 'have "foo" tag with attribute bar="baz"' }
+      end
+
+      context "have_tag(:foo).with_attribute(:bar => /baz/)" do
+        subject { have_tag(:foo).with_attribute(:bar => /baz/) }
+        its(:description) { should == 'have "foo" tag with attribute bar=~/baz/' }
+      end
+
+      context "have_tag(:foo).with_attribute(:bar => true)" do
+        subject { have_tag(:foo).with_attribute(:bar => true) }
+        its(:description) { should == 'have "foo" tag with attribute bar=anything' }
+      end
+
+      context "have_tag(:foo).with_attribute(:bar => false)" do
+        subject { have_tag(:foo).with_attribute(:bar => false) }
+        its(:description) { should == 'have "foo" tag without attribute bar' }
+      end
+
+      context "have_tag(:foo).with_attributes(:bar => '1', :baz => '2')" do
+        subject { have_tag(:foo).with_attributes(:bar => '1', :baz => '2') }
+        its(:description) { should == 'have "foo" tag with attributes bar="1" and baz="2"' }
+      end
+
+      context "have_tag(:foo).with_attributes(:bar => '1', :baz => '2', :qux => '3')" do
+        subject { have_tag(:foo).with_attributes(:bar => '1', :baz => '2', :qux => '3') }
+        its(:description) { should == 'have "foo" tag with attributes bar="1", baz="2", and qux="3"' }
+      end
+
+      context "have_tag(:foo).with_attributes(:bar => true, :baz => false)" do
+        subject { have_tag(:foo).with_attributes(:bar => true, :baz => false) }
+        its(:description) { should == 'have "foo" tag with attribute bar=anything and without attribute baz' }
+      end
+    end
+  end
 end

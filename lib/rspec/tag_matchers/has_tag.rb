@@ -100,6 +100,13 @@ module RSpec::TagMatchers
       @criteria   = []
     end
 
+    # Returns a description of the matcher's criteria. The description is used in RSpec's output.
+    #
+    # @return [String]
+    def description
+      "have #{@name.inspect} tag #{extra_description}".strip
+    end
+
     # Answers whether or not the matcher matches any elements within +rendered+.
     #
     # @param [String] rendered    A string of HTML or an Object whose +to_s+ method returns HTML.
@@ -189,7 +196,6 @@ module RSpec::TagMatchers
 
     private
 
-
     # Answers whether or not +element+ matches the attributes in the attributes hash given to
     # {#with_attribute}.
     #
@@ -217,5 +223,99 @@ module RSpec::TagMatchers
         end
       end
     end
+
+    # Provides extra description that can be appended to the basic description.
+    #
+    # @return [String]
+    def extra_description
+      attributes_description
+    end
+
+    # Returns a description of the attribute criteria. For example, the description of an attribute
+    # criteria of <tt>with_attribute(:foo => "bar")</tt> will look like <tt>'with attribute
+    # foo="bar"'</tt>.
+    #
+    # @return [String]
+    def attributes_description
+      grouped_attributes = @attributes.group_by { |key, value| !!value }
+
+      make_sentence(
+        grouped_attributes.map do |group_key, attributes|
+          if attributes.count > 0
+            grouped_attributes_prefix(group_key, attributes.count > 1) +
+              grouped_attributes_description(attributes)
+          end
+        end
+      )
+    end
+
+    # Provides a prefix that can be used before a list of attribute criteria. Possible oututs are
+    # <tt>"with attribute"</tt>, <tt>"with attributes"</tt>, <tt>"without attribute"</tt>, and
+    # <tt>"without attributes"</tt>.
+    #
+    # @param [Boolean] value    Whether this should prefix inclusive attributes. Selects between
+    #                           <tt>"with"</tt> and <tt>"without"</tt>.
+    # @param [Boolean] plural   Whether this prefixes multiple attributes. Selects between
+    #                           <tt>"attribute"</tt> and <tt>"attributes"</tt>.
+    #
+    # @return [String]
+    def grouped_attributes_prefix(value, plural)
+      (value ? "with " : "without ") + (plural ? "attributes " : "attribute ")
+    end
+
+    # Describes a group of attribute criteria, combining them into a sentence fragment, with
+    # punctuation and conjunctions if necessary.
+    #
+    # @param [Array] attributes   A list of <tt>[key, value]</tt> pairs that describe the attribute
+    #                             criteria.
+    #
+    # @return [String]
+    def grouped_attributes_description(attributes)
+      make_sentence(
+        attributes.map do |key, value|
+          attribute_description(key, value)
+        end
+      )
+    end
+
+    def attribute_description(key, value)
+      case value
+      when true
+        "#{key}=anything"
+      when false
+        key.to_s
+      when Regexp
+        "#{key}=~#{value.inspect}"
+      else
+        "#{key}=#{value.inspect}"
+      end
+    end
+
+    # Joins multiple strings into a sentence with punctuation and conjunctions.
+    #
+    # @example
+    #   make_sentence("foo")                # => "foo"
+    #   make_sentence("foo", "bar")         # => "foo and bar"
+    #   make_sentence("foo", "bar", "baz")  # => "foo, bar, and baz"
+    #
+    # @param [Array of Strings] *strings  A list of strings to be combined into a sentence.
+    #
+    # @return [String]
+    def make_sentence(*strings)
+      strings = strings.flatten.reject(&:empty?)
+
+      case strings.count
+      when 0
+        ""
+      when 1
+        strings.first
+      else
+        last       = strings.pop
+        puncuation = strings.count > 1 ? ", " : " "
+
+        [strings, "and #{last}"].flatten.join(puncuation)
+      end
+    end
+
   end
 end
