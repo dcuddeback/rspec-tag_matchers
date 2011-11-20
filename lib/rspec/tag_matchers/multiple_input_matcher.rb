@@ -19,8 +19,6 @@ module RSpec::TagMatchers
   #       '4i' => HasSelect.new,      # expressions: /\(4i\)/ and /\(5i\)/
   #       '5i' => HasSelect.new
   #     )
-  #
-  #
   class MultipleInputMatcher
 
     # Initializes a matcher that matches multiple input elements.
