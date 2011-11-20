@@ -6,9 +6,15 @@ module RSpec::TagMatchers
   # @modifier for
   #   Adds a criteria that the input must be for the given attribute.
   #
+  # @modifier value
+  #   Adds a criteria that the input must have a given value.
+  #
   # @example Matching an input for the +name+ attribute on +user+
   #   it { should have_input.for(:user => :name) }
   #   it { should have_input.for(:user, :name) }
+  #
+  # @example Matching an input with a value of <tt>"42"</tt>.
+  #   it { should have_input.value("42") }
   #
   # @return [HasInput]
   #
@@ -86,6 +92,15 @@ module RSpec::TagMatchers
     def for(*args)
       with_attribute(:name => build_name(*args))
       self
+    end
+
+    # Adds a criteria that the input's value must match a certain value.
+    #
+    # @param [String, Symbol, Regexp, true, false]  value
+    #
+    # @return [HasInput] self
+    def value(value)
+      with_attribute(:value => value)
     end
 
     private

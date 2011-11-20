@@ -50,4 +50,13 @@ describe RSpec::TagMatchers::HasInput do
       it      { should     match("<input name='user[name][first]' />") }
     end
   end
+
+  describe "matching input values" do
+    context "have_input.value(:foo)" do
+      subject { have_input.value(:foo) }
+      it      { should     match("<input value='foo' />") }
+      it      { should_not match("<input value='bar' />") }
+      it      { should_not match("<input />") }
+    end
+  end
 end
