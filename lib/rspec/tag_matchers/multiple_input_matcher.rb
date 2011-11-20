@@ -42,6 +42,7 @@ module RSpec::TagMatchers
     #
     # @return [Boolean]
     def matches?(rendered)
+      @rendered = rendered
       @failures = matchers.reject do |matcher|
         matcher.matches?(rendered)
       end
@@ -65,8 +66,12 @@ module RSpec::TagMatchers
     #
     # @return [MultipleInputMatcher] self
     def for(*args)
+      @for = args.dup
+      @for.extend(DeepFlattening)
+      @for = @for.deep_flatten
+
       @components.each do |index, matcher|
-        delegated_for(index, matcher, args)
+        delegated_for(index, matcher, @for)
       end
       self
     end
@@ -101,10 +106,7 @@ module RSpec::TagMatchers
     # @param [Arrah, Hash]  args    A hierarchy of names that would normally be passed to
     #                               {HasInput#for}.
     def delegated_for(key, matcher, args)
-      args = args.dup
-      args.extend(DeepFlattening)
-      args = args.deep_flatten
-
+      args      = args.dup
       args[-1]  = args[-1].to_s
       args[-1] += "(#{key})"
       matcher.for(*args)

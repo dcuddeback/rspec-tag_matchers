@@ -56,4 +56,54 @@ describe RSpec::TagMatchers::HasTimeSelect do
       it      { should_not match(start_time_with_hour_minute_and_second) }
     end
   end
+
+  describe "#description" do
+    context "for have_time_select" do
+      subject { have_time_select.description }
+      it      { should == "have time select" }
+    end
+
+    context "for have_time_select.for(:start_time)" do
+      subject { have_time_select.for(:start_time).description }
+      it      { should == "have time select for start_time" }
+    end
+
+    context "for have_time_select.for(:event => :start_time)" do
+      subject { have_time_select.for(:event => :start_time).description }
+      it      { should == "have time select for event.start_time" }
+    end
+
+    context "for have_time_select.for(:event, :start => :time)" do
+      subject { have_time_select.for(:event, :start => :time).description }
+      it      { should == "have time select for event.start.time" }
+    end
+  end
+
+  describe "#failure_message" do
+    context "for have_time_select" do
+      let(:matcher) { have_time_select }
+
+      context "matching '<bar></bar>'" do
+        let(:document) { "<bar></bar>" }
+
+        before  { matcher.matches?(document) }
+        subject { matcher.failure_message }
+        it      { should == "expected document to #{matcher.description}; got: #{document}" }
+      end
+    end
+  end
+
+  describe "#negative_failure_message" do
+    context "for have_time_select" do
+      let(:matcher) { have_time_select }
+
+      context "matching \"<select name='(4i)'><select><select name='(5i)'></select>\"" do
+        let(:document) { "<select name='(4i)'><select><select name='(5i)'></select>" }
+
+        before  { matcher.matches?(document) }
+        subject { matcher.negative_failure_message }
+        it      { should == "expected document to not #{matcher.description}; got: #{document}" }
+      end
+    end
+  end
 end

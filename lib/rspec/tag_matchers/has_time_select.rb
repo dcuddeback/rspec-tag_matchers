@@ -18,5 +18,43 @@ module RSpec::TagMatchers
     def initialize
       super('4i' => HasSelect.new, '5i' => HasSelect.new)
     end
+
+    # Returns a description of the matcher's criteria.
+    #
+    # @return [String]
+    def description
+      [basic_description, extra_description].compact.join(" ")
+    end
+
+    # Returns an explanation of why the matcher failed to match with +should+.
+    #
+    # @return [String]
+    def failure_message
+      "expected document to #{description}; got: #{@rendered}"
+    end
+
+    # Returns an explanation of why the matcher failed to match with +should_not+.
+    #
+    # @return [String]
+    def negative_failure_message
+      "expected document to not #{description}; got: #{@rendered}"
+    end
+
+    private
+
+    # Returns a basic description.
+    #
+    # @return [String]
+    def basic_description
+      "have time select"
+    end
+
+    # Provides an extra description fragment that can be appended to the basic description.
+    #
+    # @return [String]
+    def extra_description
+      "for #{@for.join(".")}" if @for
+    end
+
   end
 end
