@@ -107,6 +107,20 @@ module RSpec::TagMatchers
       "have #{@name.inspect} tag #{extra_description}".strip
     end
 
+    # Returns an explanation of why the matcher failed to match with +should+.
+    #
+    # @return [String]
+    def failure_message
+      "expected document to #{description}; got: #{@rendered}"
+    end
+
+    # Returns an explanation of why the matcher failed to match with +should_not+.
+    #
+    # @return [String]
+    def negative_failure_message
+      "expected document to not #{description}; got: #{@rendered}"
+    end
+
     # Answers whether or not the matcher matches any elements within +rendered+.
     #
     # @param [String] rendered    A string of HTML or an Object whose +to_s+ method returns HTML.
@@ -114,7 +128,8 @@ module RSpec::TagMatchers
     #
     # @return [Boolean]
     def matches?(rendered)
-      Nokogiri::HTML::Document.parse(rendered.to_s).css(@name).select do |element|
+      @rendered = rendered
+      Nokogiri::HTML::Document.parse(@rendered.to_s).css(@name).select do |element|
         matches_attributes?(element) && matches_criteria?(element)
       end.length > 0
     end

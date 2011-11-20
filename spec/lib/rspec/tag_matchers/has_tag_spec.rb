@@ -347,4 +347,32 @@ describe RSpec::TagMatchers::HasTag do
       end
     end
   end
+
+  describe "#failure_message" do
+    context "have_tag(:foo)" do
+      let(:matcher) { have_tag(:foo) }
+
+      context "matching '<bar></bar>'" do
+        let(:document) { "<bar></bar>" }
+
+        before  { matcher.matches?(document) }
+        subject { matcher.failure_message }
+        it      { should == "expected document to #{matcher.description}; got: #{document}" }
+      end
+    end
+  end
+
+  describe "#negative_failure_message" do
+    context "have_tag(:foo)" do
+      let(:matcher) { have_tag(:foo) }
+
+      context "matching '<foo></foo>'" do
+        let(:document) { "<foo></foo>" }
+
+        before  { matcher.matches?(document) }
+        subject { matcher.negative_failure_message }
+        it      { should == "expected document to not #{matcher.description}; got: #{document}" }
+      end
+    end
+  end
 end
