@@ -59,11 +59,35 @@ module RSpec::TagMatchers
     #
     # @return [HasDateSelect] self
     def discard(*parts)
+      @discard ||= []
+      @discard  += parts
+
       parts.each do |part|
         # TODO: create a HasHiddenInput matcher
         replace_matcher(part, HasInput.new.with_attribute(:type => :hidden))
       end
       self
+    end
+
+    # Returns a description of the matcher's criteria.
+    #
+    # @return [String]
+    def description
+      [basic_description, extra_description].compact.reject(&:empty?).join(" ")
+    end
+
+    # Returns an explanation of why the matcher failed to match with +should+.
+    #
+    # @return [String]
+    def failure_message
+      "expected document to #{description}; got: #{@rendered}"
+    end
+
+    # Returns an explanation of why the matcher failed to match with +should_not+.
+    #
+    # @return [String]
+    def negative_failure_message
+      "expected document to not #{description}; got: #{@rendered}"
     end
 
     private
@@ -88,6 +112,47 @@ module RSpec::TagMatchers
         :month => '2i',
         :day   => '3i'
       }[part]
+    end
+
+    # Returns a basic description.
+    #
+    # @return [String]
+    def basic_description
+      "have date select"
+    end
+
+    # Provides an extra description fragment that can be appended to the basic description.
+    #
+    # @return [String]
+    def extra_description
+      [for_description, discard_description].compact.join(" ")
+    end
+
+    def for_description
+      "for #{@for.join(".")}" if @for
+    end
+
+    def discard_description
+      "without #{make_sentence(@discard, :conjunction => "or")}" if @discard
+    end
+
+    def make_sentence(*strings)
+      strings = strings.flatten.reject(&:empty?)
+      options = strings.pop if strings.last.is_a?(Hash)
+
+      conjunction = options[:conjunction] || "and"
+
+      case strings.count
+      when 0
+        ""
+      when 1
+        strings.first
+      else
+        last       = strings.pop
+        puncuation = strings.count > 1 ? ", " : " "
+
+        [strings, "#{conjunction} #{last}"].flatten.join(puncuation)
+      end
     end
   end
 end

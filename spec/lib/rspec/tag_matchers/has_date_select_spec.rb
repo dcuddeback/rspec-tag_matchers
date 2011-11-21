@@ -106,4 +106,91 @@ describe RSpec::TagMatchers::HasDateSelect do
     end
   end
 
+  describe "#description" do
+    context "for simple date select" do
+      context "have_date_select" do
+        subject { have_date_select.description }
+        it      { should == "have date select" }
+      end
+    end
+
+    context "for date select with attribute matcher" do
+      context "have_date_select.for(:start_date)" do
+        subject { have_date_select.for(:start_date).description }
+        it      { should == "have date select for start_date" }
+      end
+
+      context "have_date_select.for(:event => :start_date)" do
+        subject { have_date_select.for(:event => :start_date).description }
+        it      { should == "have date select for event.start_date" }
+      end
+
+      context "have_date_select.for(:event, :start => :date)" do
+        subject { have_date_select.for(:event, :start => :date).description }
+        it      { should == "have date select for event.start.date" }
+      end
+    end
+
+    context "for date select with discarded components" do
+      context "have_date_select.discard(:day)" do
+        subject { have_date_select.discard(:day).description }
+        it      { should == "have date select without day" }
+      end
+
+      context "have_date_select.discard(:month)" do
+        subject { have_date_select.discard(:month).description }
+        it      { should == "have date select without month" }
+      end
+
+      context "have_date_select.discard(:year)" do
+        subject { have_date_select.discard(:year).description }
+        it      { should == "have date select without year" }
+      end
+
+      context "have_date_select.discard(:day, :month)" do
+        subject { have_date_select.discard(:day, :month).description }
+        it      { should == "have date select without day or month" }
+      end
+
+      context "have_date_select.discard(:day, :month, :year)" do
+        subject { have_date_select.discard(:day, :month, :year).description }
+        it      { should == "have date select without day, month, or year" }
+      end
+    end
+
+    context "for date select with attribute matcher and discarded components" do
+      context "have_date_select.discard(:day).for(:event => :start_date)" do
+        subject { have_date_select.discard(:day).for(:event => :start_date).description }
+        it      { should == "have date select for event.start_date without day" }
+      end
+    end
+  end
+
+  describe "#failure_message" do
+    context "for have_date_select" do
+      let(:matcher) { have_date_select }
+
+      context "matching '<bar></bar>'" do
+        let(:document) { "<bar></bar>" }
+
+        before  { matcher.matches?(document) }
+        subject { matcher.failure_message }
+        it      { should == "expected document to #{matcher.description}; got: #{document}" }
+      end
+    end
+  end
+
+  describe "#negative_failure_message" do
+    context "for have_date_select" do
+      let(:matcher) { have_date_select }
+
+      context "matching \"<select name='(4i)'><select><select name='(5i)'></select>\"" do
+        let(:document) { "<select name='(4i)'><select><select name='(5i)'></select>" }
+
+        before  { matcher.matches?(document) }
+        subject { matcher.negative_failure_message }
+        it      { should == "expected document to not #{matcher.description}; got: #{document}" }
+      end
+    end
+  end
 end
