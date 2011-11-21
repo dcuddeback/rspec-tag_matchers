@@ -18,9 +18,8 @@ module RSpec::TagMatchers::Helpers
     #
     # @return [String]
     def make_sentence(*strings)
-      strings = strings.flatten.reject(&:empty?)
-      options = strings.last.is_a?(Hash) ? strings.pop : {}
-
+      options     = strings.last.is_a?(Hash) ? strings.pop : {}
+      strings     = strings.flatten.map(&:to_s).reject(&:empty?)
       conjunction = options[:conjunction] || "and"
 
       case strings.count

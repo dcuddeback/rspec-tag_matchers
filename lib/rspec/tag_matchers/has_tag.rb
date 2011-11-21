@@ -256,11 +256,18 @@ module RSpec::TagMatchers
       grouped_attributes = @attributes.group_by { |key, value| !!value }
 
       make_sentence(
-        grouped_attributes.map do |group_key, attributes|
-          if attributes.count > 0
-            grouped_attributes_prefix(group_key, attributes.count > 1) +
+        # Yes, this is functionally equivalent to grouped_attributes.map, except this forces the
+        # keys to be evalutated in the order [true, false]. This is necessary to maintain
+        # compatibility with Ruby 1.8.7, because hashes in 1.8.7 aren't ordered.
+        [true, false].reduce([]) do |memo, group_key|
+          attributes = grouped_attributes[group_key]
+
+          if attributes
+            memo << grouped_attributes_prefix(group_key, attributes.count > 1) +
               grouped_attributes_description(attributes)
           end
+
+          memo
         end
       )
     end
@@ -288,7 +295,7 @@ module RSpec::TagMatchers
     # @return [String]
     def grouped_attributes_description(attributes)
       make_sentence(
-        attributes.map do |key, value|
+        attributes.sort_by{ |key, value| key.to_s }.map do |key, value|
           attribute_description(key, value)
         end
       )
