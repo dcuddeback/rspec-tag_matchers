@@ -90,6 +90,7 @@ module RSpec::TagMatchers
   # provide additional methods that can be chained from the matcher to provide tag-specific
   # criteria. See {HasTag#with_criteria} for how to add custom criteria to a matcher.
   class HasTag
+    include Helpers::SentenceHelper
 
     # Constructs a matcher that matches HTML tags by +name+.
     #
@@ -293,6 +294,12 @@ module RSpec::TagMatchers
       )
     end
 
+    # Returns a string describing the criteria for matching attribute +key+ with +value+.
+    #
+    # @param [Symbol] key     The attribute's key.
+    # @param [Object] value   The attribute's expected value.
+    #
+    # @return [String]
     def attribute_description(key, value)
       case value
       when true
@@ -305,32 +312,5 @@ module RSpec::TagMatchers
         "#{key}=#{value.inspect}"
       end
     end
-
-    # Joins multiple strings into a sentence with punctuation and conjunctions.
-    #
-    # @example
-    #   make_sentence("foo")                # => "foo"
-    #   make_sentence("foo", "bar")         # => "foo and bar"
-    #   make_sentence("foo", "bar", "baz")  # => "foo, bar, and baz"
-    #
-    # @param [Array of Strings] *strings  A list of strings to be combined into a sentence.
-    #
-    # @return [String]
-    def make_sentence(*strings)
-      strings = strings.flatten.reject(&:empty?)
-
-      case strings.count
-      when 0
-        ""
-      when 1
-        strings.first
-      else
-        last       = strings.pop
-        puncuation = strings.count > 1 ? ", " : " "
-
-        [strings, "and #{last}"].flatten.join(puncuation)
-      end
-    end
-
   end
 end

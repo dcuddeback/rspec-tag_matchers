@@ -24,6 +24,7 @@ module RSpec::TagMatchers
 
   # A matcher that matches Rails' +date_select+ drop-downs.
   class HasDateSelect < MultipleInputMatcher
+    include Helpers::SentenceHelper
 
     # Initializes a HasDateSelect matcher.
     def initialize
@@ -134,25 +135,6 @@ module RSpec::TagMatchers
 
     def discard_description
       "without #{make_sentence(@discard, :conjunction => "or")}" if @discard
-    end
-
-    def make_sentence(*strings)
-      strings = strings.flatten.reject(&:empty?)
-      options = strings.pop if strings.last.is_a?(Hash)
-
-      conjunction = options[:conjunction] || "and"
-
-      case strings.count
-      when 0
-        ""
-      when 1
-        strings.first
-      else
-        last       = strings.pop
-        puncuation = strings.count > 1 ? ", " : " "
-
-        [strings, "#{conjunction} #{last}"].flatten.join(puncuation)
-      end
     end
   end
 end
