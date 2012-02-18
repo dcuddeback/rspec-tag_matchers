@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{rspec-tag_matchers}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{David Cuddeback}]
-  s.date = %q{2011-11-16}
+  s.date = %q{2012-02-18}
   s.description = %q{A collection of RSpec matchers that understand Rails conventions, allowing for more concise specs.}
   s.email = %q{david.cuddeback@gmail.com}
   s.extra_rdoc_files = [
@@ -31,14 +31,18 @@ Gem::Specification.new do |s|
     "lib/rspec-tag_matchers.rb",
     "lib/rspec/tag_matchers.rb",
     "lib/rspec/tag_matchers/has_checkbox.rb",
+    "lib/rspec/tag_matchers/has_date_select.rb",
     "lib/rspec/tag_matchers/has_form.rb",
     "lib/rspec/tag_matchers/has_input.rb",
     "lib/rspec/tag_matchers/has_select.rb",
     "lib/rspec/tag_matchers/has_tag.rb",
     "lib/rspec/tag_matchers/has_time_select.rb",
+    "lib/rspec/tag_matchers/helpers/sentence_helper.rb",
     "lib/rspec/tag_matchers/multiple_input_matcher.rb",
+    "rspec-tag_matchers.gemspec",
     "spec/core_ext/deep_flattening_spec.rb",
     "spec/lib/rspec/tag_matchers/has_checkbox_spec.rb",
+    "spec/lib/rspec/tag_matchers/has_date_select_spec.rb",
     "spec/lib/rspec/tag_matchers/has_form_spec.rb",
     "spec/lib/rspec/tag_matchers/has_input_spec.rb",
     "spec/lib/rspec/tag_matchers/has_select_spec.rb",
