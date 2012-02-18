@@ -17,6 +17,23 @@ containing HTML (this includes Nokogiri classes). They assume Rails conventions.
     it { should have_checkbox.for(:user => :terms_of_service) }
   end
 
+== Getting Started
+
+* Add +rspec-tag_matchers+ to your +Gemfile+:
+
+    group :test do
+      gem "rspec-tag_matchers"
+    end
+
+* Add the tag matchers to the RSpec context. In +spec_helper+:
+
+    RSpec.configure do |config|
+      config.include RSpec::TagMatchers
+    end
+
+* Now you can use the tag matchers in your RSpec tests. The included matchers are documented
+  here: http://rdoc.info/github/dcuddeback/rspec-tag_matchers/master/RSpec/TagMatchers.
+
 == Status
 
 <tt>rspec-tag_matchers</tt> is tested against Ruby 1.8.7, 1.9.2, 1.9.3, REE,
