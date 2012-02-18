@@ -1,5 +1,5 @@
 module RSpec::TagMatchers
-  # Matches +<select>+ tags in HTML.
+  # Matches <tt><select></tt> tags in HTML.
   #
   # @example Matching a select tag for a user's role
   #   it { should have_select.for(:user => :role) }

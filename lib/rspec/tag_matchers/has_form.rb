@@ -1,5 +1,5 @@
 module RSpec::TagMatchers
-  # Matches +<form>+ tags in HTML.
+  # Matches <tt><form></tt> tags in HTML.
   #
   # @modifier with_verb
   #   Adds a criteria that the form must have the given HTTP verb.

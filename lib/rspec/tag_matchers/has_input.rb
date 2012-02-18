@@ -1,7 +1,7 @@
 require 'deep_flattening'
 
 module RSpec::TagMatchers
-  # Matches +<input>+ tags in HTML.
+  # Matches <tt><input></tt> tags in HTML.
   #
   # @modifier for
   #   Adds a criteria that the input must be for the given attribute.
