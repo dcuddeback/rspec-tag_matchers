@@ -292,6 +292,15 @@ describe RSpec::TagMatchers::HasTag do
     end
   end
 
+  describe "count matching" do
+    context "with count matcher" do
+      subject { have_tag(:foo).with_count(2) }
+      it      { should     match("<foo></foo><foo></foo>") }
+      it      { should_not match("<foo></foo>") }
+      it      { should_not match("<foo></foo><foo></foo><foo></foo>") }
+    end
+  end
+
   describe "#description" do
     context "for simple matchers" do
       context "have_tag(:foo)" do

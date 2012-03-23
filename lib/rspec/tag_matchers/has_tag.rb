@@ -130,9 +130,10 @@ module RSpec::TagMatchers
     # @return [Boolean]
     def matches?(rendered)
       @rendered = rendered
-      Nokogiri::HTML::Document.parse(@rendered.to_s).css(@name).select do |element|
+      matches = Nokogiri::HTML::Document.parse(@rendered.to_s).css(@name).select do |element|
         matches_attributes?(element) && matches_criteria?(element)
-      end.length > 0
+      end
+      return true if (@count.nil? && matches.length > 0) || matches.length == @count
     end
 
     # Adds a constraint that the matched elements must match certain attributes.  The +attributes+
@@ -171,6 +172,11 @@ module RSpec::TagMatchers
     def with_criteria(method = nil, &block)
       @criteria << method   unless method.nil?
       @criteria << block    if block_given?
+      self
+    end
+
+    def with_count(count)
+      @count = count
       self
     end
 
