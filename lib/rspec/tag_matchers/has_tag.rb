@@ -27,11 +27,11 @@ module RSpec::TagMatchers
   #
   # @see HasTag#with_attribute
   # @see HasTag#with_criteria
-  def have_tag(name, inner_html = nil)
+  def have_tag(name, content = nil)
     matcher = HasTag.new(name)
-    if inner_html
-      matcher.with_criteria { |element| element.inner_html == inner_html } if inner_html.is_a? String
-      matcher.with_criteria { |element| element.inner_html =~ inner_html } if inner_html.is_a? Regexp
+    if content
+      matcher.with_criteria { |element| element.content == content } if content.is_a? String
+      matcher.with_criteria { |element| element.content =~ content } if content.is_a? Regexp
     end
     matcher
   end

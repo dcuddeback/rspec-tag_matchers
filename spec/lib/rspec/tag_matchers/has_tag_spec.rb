@@ -60,6 +60,7 @@ describe RSpec::TagMatchers::HasTag do
   describe "inner html matching" do
     context "matches with string" do
       subject { have_tag("foo", "bar") }
+      it      { should     match("<foo><span>bar</span></foo>") }
       it      { should     match("<foo>bar</foo>") }
       it      { should_not match("<foo>bar2</foo>") }
     end
