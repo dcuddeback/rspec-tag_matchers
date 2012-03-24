@@ -3,6 +3,8 @@ require 'nokogiri'
 module RSpec::TagMatchers
   # Matches HTML tags by name.
   #
+  # @param [String, Regexp] inner_html Contents of element to match against
+  #
   # @modifier with_attribute
   #   Adds a criteria that an element must match the given attributes.
   #
@@ -11,6 +13,9 @@ module RSpec::TagMatchers
   #
   # @example Matching anchor tags
   #   it { should have_tag(:a) }
+  #
+  # @example Matching inner html
+  #   it { should have_tag(:a, "my site") }
   #
   # @example Matching anchor tags that link to "/"
   #   it { should have_tag(:a).with_attribute(:href => "/") }
@@ -22,8 +27,13 @@ module RSpec::TagMatchers
   #
   # @see HasTag#with_attribute
   # @see HasTag#with_criteria
-  def have_tag(name)
-    HasTag.new(name)
+  def have_tag(name, inner_html = nil)
+    matcher = HasTag.new(name)
+    if inner_html
+      matcher.with_criteria { |element| element.inner_html == inner_html } if inner_html.is_a? String
+      matcher.with_criteria { |element| element.inner_html =~ inner_html } if inner_html.is_a? Regexp
+    end
+    matcher
   end
 
   # The base class for all tag matchers. HasTag is intended to provide facilities that are useful to
