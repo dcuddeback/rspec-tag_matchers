@@ -355,6 +355,11 @@ describe RSpec::TagMatchers::HasTag do
         its(:description) { should == 'have "foo" tag with attribute bar=anything and without attribute baz' }
       end
     end
+
+    context "for matchers with count criteria" do
+      subject { have_tag(:foo).with_count(2) }
+      its(:description) { should == 'have "foo" tag 2 times'}
+    end
   end
 
   describe "#failure_message" do

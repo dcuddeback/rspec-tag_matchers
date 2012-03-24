@@ -267,7 +267,7 @@ module RSpec::TagMatchers
     #
     # @return [String]
     def extra_description
-      attributes_description
+      attributes_description + count_description
     end
 
     # Returns a description of the attribute criteria. For example, the description of an attribute
@@ -295,7 +295,6 @@ module RSpec::TagMatchers
       )
     end
 
-    # Provides a prefix that can be used before a list of attribute criteria. Possible oututs are
     # Provides a prefix that can be used before a list of attribute criteria. Possible outputs are
     # <tt>"with attribute"</tt>, <tt>"with attributes"</tt>, <tt>"without attribute"</tt>, and
     # <tt>"without attributes"</tt>.
@@ -342,6 +341,19 @@ module RSpec::TagMatchers
       else
         "#{key}=#{value.inspect}"
       end
+    end
+
+    # Returns a string describing the number of times the element must be matched.
+    # For example, the description of an attribute criteria of <tt>with_count(2)</tt> will look like
+    # <tt>'2 times'</tt>.
+    #
+    #
+    # @return [String]
+    def count_description
+      if @count
+        return "#{@count} times"
+      end
+      ""
     end
   end
 end
