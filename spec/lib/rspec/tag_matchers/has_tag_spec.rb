@@ -57,6 +57,20 @@ describe RSpec::TagMatchers::HasTag do
     end
   end
 
+  describe "inner html matching" do
+    context "matches with string" do
+      subject { have_tag("foo", "bar") }
+      it      { should     match("<foo><span>bar</span></foo>") }
+      it      { should     match("<foo>bar</foo>") }
+      it      { should_not match("<foo>bar2</foo>") }
+    end
+    context "matches with regexp" do
+      subject { have_tag("foo", /bar/) }
+      it      { should     match("<foo>abcbarxyz</foo>") }
+      it      { should_not match("<foo></foo>") }
+    end
+  end
+
   describe "attribute value matching" do
     context "true matches presence of attribute" do
       context 'have_tag(:foo).with_attribute(:bar => true)' do
