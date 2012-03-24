@@ -175,6 +175,14 @@ module RSpec::TagMatchers
       self
     end
 
+    # Adds a constraint that the matched elements appear a given number of times.  The criteria must be a Fixnum
+    #
+    # @example
+    #   have_div.with_count(2)
+    #
+    # @param  [Fixnum]  method  The name of the method to be called.
+    #
+    # @return [self]
     def with_count(count)
       @count = count
       self
@@ -279,6 +287,7 @@ module RSpec::TagMatchers
     end
 
     # Provides a prefix that can be used before a list of attribute criteria. Possible oututs are
+    # Provides a prefix that can be used before a list of attribute criteria. Possible outputs are
     # <tt>"with attribute"</tt>, <tt>"with attributes"</tt>, <tt>"without attribute"</tt>, and
     # <tt>"without attributes"</tt>.
     #
