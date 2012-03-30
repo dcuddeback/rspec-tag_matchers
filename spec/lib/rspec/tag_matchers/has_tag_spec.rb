@@ -81,6 +81,29 @@ describe RSpec::TagMatchers::HasTag do
     end
   end
 
+  describe "count matching" do
+    context 'have_tag(:foo).with_count(1)' do
+      subject { have_tag(:foo).with_count(1) }
+      it      { should     match("<foo></foo>") }
+      it      { should_not match("<foo></foo><foo></foo>") }
+      it      { should_not match("<foo></foo><foo></foo><foo></foo>") }
+    end
+
+    context 'have_tag(:foo).with_count(2)' do
+      subject { have_tag(:foo).with_count(2) }
+      it      { should_not match("<foo></foo>") }
+      it      { should     match("<foo></foo><foo></foo>") }
+      it      { should_not match("<foo></foo><foo></foo><foo></foo>") }
+    end
+
+    context 'have_tag(:foo).with_count(3)' do
+      subject { have_tag(:foo).with_count(3) }
+      it      { should_not match("<foo></foo>") }
+      it      { should_not match("<foo></foo><foo></foo>") }
+      it      { should     match("<foo></foo><foo></foo><foo></foo>") }
+    end
+  end
+
   describe "attribute value matching" do
     context "true matches presence of attribute" do
       context 'have_tag(:foo).with_attribute(:bar => true)' do
@@ -313,15 +336,6 @@ describe RSpec::TagMatchers::HasTag do
           it { should_not match("<bar></bar>") }
         end
       end
-    end
-  end
-
-  describe "count matching" do
-    context "with count matcher" do
-      subject { have_tag(:foo).with_count(2) }
-      it      { should     match("<foo></foo><foo></foo>") }
-      it      { should_not match("<foo></foo>") }
-      it      { should_not match("<foo></foo><foo></foo><foo></foo>") }
     end
   end
 

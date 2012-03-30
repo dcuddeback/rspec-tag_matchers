@@ -139,7 +139,7 @@ module RSpec::TagMatchers
       matches = Nokogiri::HTML::Document.parse(@rendered.to_s).css(@name).select do |element|
         matches_attributes?(element) && matches_content?(element) && matches_criteria?(element)
       end
-      return matches_count?(matches)
+      matches_count?(matches)
     end
 
     # Adds a constraint that the matched elements must match certain attributes.  The +attributes+
@@ -292,7 +292,7 @@ module RSpec::TagMatchers
 
     # Answers whether or not +element+ appears the number of times set by {#with_count}.
     #
-    # @param [[Nokogiri::XML::Node]]  matches  The matched elements to be tested.
+    # @param [Array] matches  The matched elements to be tested.
     #
     # @return [Boolean]
     def matches_count?(matches)
@@ -379,17 +379,13 @@ module RSpec::TagMatchers
       end
     end
 
-    # Returns a string describing the number of times the element must be matched.
-    # For example, the description of an attribute criteria of <tt>with_count(2)</tt> will look like
-    # <tt>'2 times'</tt>.
-    #
+    # Returns a string describing the number of times the element must be matched.  For example, the
+    # description of an attribute criteria of <tt>with_count(2)</tt> will look like <tt>'2
+    # times'</tt>.
     #
     # @return [String]
     def count_description
-      if @count
-        return "#{@count} times"
-      end
-      ""
+      @count ? "#{@count} times" : ""
     end
   end
 end
