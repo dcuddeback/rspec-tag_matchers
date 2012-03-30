@@ -9,6 +9,9 @@ module RSpec::TagMatchers
   # @modifier with_content
   #   Adds a criteria that an element's content must match the given content.
   #
+  # @modifier with_count
+  #   Adds a criteria that the element must be found a certain number of times.
+  #
   # @modifier with_criteria
   #   Adds an arbitrary criteria.
   #
