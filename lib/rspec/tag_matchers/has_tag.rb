@@ -306,7 +306,7 @@ module RSpec::TagMatchers
     #
     # @return [String]
     def extra_description
-      attributes_description + count_description
+      attributes_description + content_description + count_description
     end
 
     # Returns a description of the attribute criteria. For example, the description of an attribute
@@ -380,6 +380,13 @@ module RSpec::TagMatchers
       else
         "#{key}=#{value.inspect}"
       end
+    end
+
+    # Returns a string describing the contents that the element must match.
+    #
+    # @return [String]
+    def content_description
+      @content ? "with content #{@content.inspect}" : ""
     end
 
     # Returns a string describing the number of times the element must be matched.  For example, the

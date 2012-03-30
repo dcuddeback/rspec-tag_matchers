@@ -394,9 +394,23 @@ describe RSpec::TagMatchers::HasTag do
       end
     end
 
+    context "for matchers with content criteria" do
+      context 'have_tag(:foo).with_content("bar")' do
+        subject { have_tag(:foo).with_content("bar") }
+        its(:description) { should == 'have "foo" tag with content "bar"' }
+      end
+
+      context 'have_tag(:foo).with_content(/bar/)' do
+        subject { have_tag(:foo).with_content(/bar/) }
+        its(:description) { should == 'have "foo" tag with content /bar/' }
+      end
+    end
+
     context "for matchers with count criteria" do
-      subject { have_tag(:foo).with_count(2) }
-      its(:description) { should == 'have "foo" tag 2 times'}
+      context 'have_tag(:foo).with_count(2)' do
+        subject { have_tag(:foo).with_count(2) }
+        its(:description) { should == 'have "foo" tag 2 times'}
+      end
     end
   end
 
