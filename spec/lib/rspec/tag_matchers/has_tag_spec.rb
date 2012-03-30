@@ -57,17 +57,27 @@ describe RSpec::TagMatchers::HasTag do
     end
   end
 
-  describe "inner html matching" do
+  describe "content matching" do
     context "matches with string" do
-      subject { have_tag("foo", "bar") }
-      it      { should     match("<foo><span>bar</span></foo>") }
-      it      { should     match("<foo>bar</foo>") }
-      it      { should_not match("<foo>bar2</foo>") }
+      context 'have_tag(:foo).with_content("bar")' do
+        subject { have_tag(:foo).with_content("bar") }
+        it      { should     match("<foo>bar</foo>") }
+        it      { should     match("<foo><span>bar</span></foo>") }
+        it      { should     match("<foo><span>b</span>ar</foo>") }
+        it      { should_not match("<foo>1bar</foo>") }
+        it      { should_not match("<foo>bar2</foo>") }
+        it      { should_not match("<foo>1bar2</foo>") }
+      end
     end
+
     context "matches with regexp" do
-      subject { have_tag("foo", /bar/) }
-      it      { should     match("<foo>abcbarxyz</foo>") }
-      it      { should_not match("<foo></foo>") }
+      context 'have_tag(:foo).with_content(/bar/)' do
+        subject { have_tag(:foo).with_content(/bar/) }
+        it      { should     match("<foo>bar</foo>") }
+        it      { should     match("<foo>123bar456</foo>") }
+        it      { should     match("<foo>123<span>b</span>ar456</foo>") }
+        it      { should_not match("<foo></foo>") }
+      end
     end
   end
 

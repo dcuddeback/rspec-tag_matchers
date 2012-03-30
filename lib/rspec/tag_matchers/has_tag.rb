@@ -3,10 +3,11 @@ require 'nokogiri'
 module RSpec::TagMatchers
   # Matches HTML tags by name.
   #
-  # @param [String, Regexp] inner_html Contents of element to match against
-  #
   # @modifier with_attribute
   #   Adds a criteria that an element must match the given attributes.
+  #
+  # @modifier with_content
+  #   Adds a criteria that an element's content must match the given content.
   #
   # @modifier with_criteria
   #   Adds an arbitrary criteria.
@@ -14,8 +15,8 @@ module RSpec::TagMatchers
   # @example Matching anchor tags
   #   it { should have_tag(:a) }
   #
-  # @example Matching inner html
-  #   it { should have_tag(:a, "my site") }
+  # @example Matching contents of a tag
+  #   it { should have_tag(:a).with_content("my site") }
   #
   # @example Matching anchor tags that link to "/"
   #   it { should have_tag(:a).with_attribute(:href => "/") }
@@ -27,13 +28,8 @@ module RSpec::TagMatchers
   #
   # @see HasTag#with_attribute
   # @see HasTag#with_criteria
-  def have_tag(name, content = nil)
-    matcher = HasTag.new(name)
-    if content
-      matcher.with_criteria { |element| element.content == content } if content.is_a? String
-      matcher.with_criteria { |element| element.content =~ content } if content.is_a? Regexp
-    end
-    matcher
+  def have_tag(name)
+    HasTag.new(name)
   end
 
   # The base class for all tag matchers. HasTag is intended to provide facilities that are useful to
@@ -141,7 +137,7 @@ module RSpec::TagMatchers
     def matches?(rendered)
       @rendered = rendered
       matches = Nokogiri::HTML::Document.parse(@rendered.to_s).css(@name).select do |element|
-        matches_attributes?(element) && matches_criteria?(element)
+        matches_attributes?(element) && matches_content?(element) && matches_criteria?(element)
       end
       return matches_count?(matches)
     end
@@ -167,6 +163,20 @@ module RSpec::TagMatchers
       self
     end
     alias :with_attributes :with_attribute
+
+    # Adds a constraint on the matched element's content.
+    #
+    # @example
+    #   have_tag(:p).with_content("Welcome!")
+    #   have_tag(:p).with_content(/^Hello, \w+$/)
+    #
+    # @param  [String, Regexp] content  The expected contents of the matched element.
+    #
+    # @return [self]
+    def with_content(content)
+      @content = content
+      self
+    end
 
     # Adds an arbitrary criteria to the matched elements. The criteria can be a method name or a
     # block. The method or block should accept a single Nokogiri::XML::Node object as its argument
@@ -248,6 +258,22 @@ module RSpec::TagMatchers
       end
     end
 
+    # Answers whether or not +element+ matches the content set by {#with_content}.
+    #
+    # @param [Nokogiri::XML::Node]  element   The element to be tested.
+    #
+    # @return [Boolean]
+    def matches_content?(element)
+      return true if @content.nil?
+
+      case @content
+      when String
+        element.content == @content
+      when Regexp
+        element.content =~ @content
+      end
+    end
+
     # Answers whether or not +element+ matches the custom criteria set by {#with_criteria}.
     #
     # @param [Nokogiri::XML::Node]  element   The element to be tested.
@@ -270,7 +296,7 @@ module RSpec::TagMatchers
     #
     # @return [Boolean]
     def matches_count?(matches)
-      true if (@count.nil? && matches.length > 0) || matches.length == @count
+      @count ? matches.length == @count : matches.length > 0
     end
 
     # Provides extra description that can be appended to the basic description.
