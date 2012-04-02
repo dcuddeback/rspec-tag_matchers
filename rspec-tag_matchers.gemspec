@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{rspec-tag_matchers}
-  s.version = "0.1.1"
+  s.version = "0.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{David Cuddeback}]
-  s.date = %q{2012-02-18}
+  s.date = %q{2012-04-02}
   s.description = %q{A collection of RSpec matchers that understand Rails conventions, allowing for more concise specs.}
   s.email = %q{david.cuddeback@gmail.com}
   s.extra_rdoc_files = [
